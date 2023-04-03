@@ -16,8 +16,12 @@ public:
     using MutexType = co::co_mutex;
     using KVMap = std::map<std::string, std::string>;
 
+    /* maxRaftState：一个阈值，超过之后 KVServer 会生成快照替换日志 */
     KVServer(std::map<int64_t, std::string>& servers, int64_t id, Persister::ptr persister, int64_t maxRaftState = 1000);
     ~KVServer();
+    
+    /* 通过 m_persister 从本地加载一个最近的快照，并调用 readSnapshot 来恢复之前的状态， 
+       然后启动一个协程执行 applier 函数，最后启动 raft 服务器并阻塞在这里 */
     void start();
     void stop();
     CommandResponse handleCommand(CommandRequest request);
@@ -30,8 +34,10 @@ public:
     [[nodiscard]]
     const KVMap& getData() const { return m_data;}
 private:
+    /* 不断从 m_applychan 里接收 raft 达成共识的消息，再根据消息类型进行对应的操作 */
     void applier();
     void saveSnapshot(int64_t index);
+    /* 读m_persister中最近的一个快照 */
     void readSnapshot(Snapshot::ptr snap);
     bool isDuplicateRequest(int64_t client, int64_t command);
     bool needSnapshot();
@@ -39,11 +45,11 @@ private:
 private:
     MutexType m_mutex;
     int64_t m_id;
-    co::co_chan<raft::ApplyMsg> m_applychan;
+    co::co_chan<raft::ApplyMsg> m_applychan; // 接收 raft 达成共识消息的 channel
 
-    KVMap m_data;
-    Persister::ptr m_persister;
-    std::unique_ptr<RaftNode> m_raft;
+    KVMap m_data;                            // map实现的键值存储
+    Persister::ptr m_persister;              // raft持久化模块
+    std::unique_ptr<RaftNode> m_raft;        // 指向一个raft服务器的智能指针
 
     std::map<int64_t, std::pair<int64_t, CommandResponse>> m_lastOperation;
     std::map<int64_t, co::co_chan<CommandResponse>> m_nofiyChans;
