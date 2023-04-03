@@ -44,7 +44,7 @@ private:
     CommandResponse applyLogToStateMachine(const CommandRequest& request);
 private:
     MutexType m_mutex;
-    int64_t m_id;
+    int64_t m_id;                            // raft node 的 id
     co::co_chan<raft::ApplyMsg> m_applychan; // 接收 raft 达成共识消息的 channel
 
     KVMap m_data;                            // map实现的键值存储
