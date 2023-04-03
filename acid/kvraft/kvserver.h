@@ -51,11 +51,12 @@ private:
     Persister::ptr m_persister;              // raft持久化模块
     std::unique_ptr<RaftNode> m_raft;        // 指向一个raft服务器的智能指针
 
-    std::map<int64_t, std::pair<int64_t, CommandResponse>> m_lastOperation;
+    /* 收到的最后一个操作 first-->请求客户端的id  pair.first-->请求命令的id  pair.second-->请求request  */
+    std::map<int64_t, std::pair<int64_t, CommandResponse>> m_lastOperation;  
     std::map<int64_t, co::co_chan<CommandResponse>> m_nofiyChans;
 
     int64_t m_lastApplied = 0;
-    int64_t m_maxRaftState = -1;
+    int64_t m_maxRaftState = -1;             // 一个阈值，超过之后 KVServer 会生成快照替换日志
 };
 }
 #endif //ACID_KVSERVER_H
