@@ -27,6 +27,8 @@ struct Params {
         }
         value = it->get<std::string>();
     }
+    /* C++17 std::optional<T>类型的变量要么是一个T类型的变量，要么是一个表示 “什么都没有” 的状态。
+       这个状态也有自己的类型和值：类型是std::nullopt_t，值为std::nullopt。 */
     std::optional<std::string> command;
     std::optional<std::string> key;
     std::optional<std::string> value;
