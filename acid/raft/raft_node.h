@@ -30,6 +30,7 @@ struct ApplyMsg {
     ApplyMsg() = default;
     explicit ApplyMsg(const Entry& ent) : type(ENTRY), data(ent.data), index(ent.index), term(ent.term) {}
     explicit ApplyMsg(const Snapshot& snap) : type(SNAPSHOT), data(snap.data), index(snap.metadata.index), term(snap.metadata.term) {}
+    
     MsgType type = ENTRY;
     std::string data{};
     int64_t index{};
