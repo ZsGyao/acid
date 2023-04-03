@@ -45,6 +45,7 @@ struct _RaftNodeIniter{
 };
 
 // 初始化配置
+/* 用于描述暂时没有被使用的函数或变量,以避免编译器对此发出警告 */
 [[maybe_unused]]
 static _RaftNodeIniter s_initer;
 
