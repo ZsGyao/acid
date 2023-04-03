@@ -26,6 +26,7 @@ public:
     CommandResponse Append(const std::string& key, const std::string& value);
     CommandResponse Delete(const std::string& key);
     CommandResponse Clear();
+    /* 当用于描述函数的返回值时，如果调用函数的地方没有获取返回值时，编译器会给予警告 */
     [[nodiscard]]
     const KVMap& getData() const { return m_data;}
 private:
