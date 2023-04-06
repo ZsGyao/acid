@@ -55,9 +55,10 @@ public:
 
     /**
      * @brief 设置RPC调用超时时间
-     * @param[in] address 服务器地址
+     * @param[in] timeout_ms 超时时间
      */
     void setTimeout(uint64_t timeout_ms);
+    
     /**
      * @brief 有参数的调用
      * @param[in] name 函数名
@@ -66,10 +67,10 @@ public:
      */
     template<typename R, typename... Params>
     Result<R> call(const std::string& name, Params... ps) {
-        using args_type = std::tuple<typename std::decay<Params>::type...>;
-        args_type args = std::make_tuple(ps...);
+        using args_type = std::tuple<typename std::decay<Params>::type...>  
+        args_type args = std::make_tuple(ps...);  // 将要调用的函数的参数打包成一个tuple
         Serializer s;
-        s << name << args;
+        s << name << args; // 将要调用的函数名和参数序列化
         s.reset();
         return call<R>(s);
     }
