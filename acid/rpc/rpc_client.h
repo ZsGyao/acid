@@ -72,7 +72,7 @@ public:
         Serializer s;
         s << name << args; // 将要调用的函数名和参数序列化
         s.reset();
-        return call<R>(s);
+        return call<R>(s); // 调用私有的实际call(s)
     }
     /**
      * @brief 无参数的调用
