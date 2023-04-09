@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(example_kvhttp)
 set(CMAKE_CXX_COMPILER "/usr/bin/g++-11")
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_FLAGS "-std=c++20 -D__const__=  -fPIC -fno-strict-aliasing -Wall ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++20 -D__const__=__unused__  -fPIC -fno-strict-aliasing -Wall ${CMAKE_CXX_FLAGS}")
 
 include_directories(${PROJECT_SOURCE_DIR}/../../)
 link_directories(${PROJECT_SOURCE_DIR}/../../lib)
